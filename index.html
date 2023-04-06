@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Name of the app -->
+		<title>Camera App</title>
+
+		<!-- Link to main style sheet -->
+		 
+	</head>
+	<body>
+
+		<!-- Camera -->
+		<main id="camera">
+
+		    <!-- Camera sensor -->
+		    <canvas id="camera--sensor"></canvas>
+		    
+		    <!-- Camera view -->
+		    <video id="camera--view" autoplay playsinline></video>
+		    
+		    <!-- Camera output -->
+		    <img src="//:0" alt="" id="camera--output">
+			<form>
+		    <!-- Camera trigger -->
+				<div id="select1">
+				<input type="radio" id="normal" name="quality" value="0">
+				<label for="normal">Normal</label><br>
+				</div>
+				<div id="select2">
+				<input type="radio" id="outlier" name="quality" value="1">
+				<label for="outlier">Abnormal</label><br> 
+				</div>
+		    	<button type='submit' id="camera--trigger">Take a picture</button>
+			</form>
+			
+		</main>
+
+		<!-- Reference to your JavaScript file -->
+		<script>
+			var constraints = { video: { facingMode: "user" }, audio: false };
+			var track = null;
+			var radio=document.getElementsByName("quality");
+			// Define constants
+			const cameraView = document.querySelector("#camera--view"),
+    		cameraOutput = document.querySelector("#camera--output"),
+    		cameraSensor = document.querySelector("#camera--sensor"),
+    		cameraTrigger = document.querySelector("#camera--trigger");
+
+			// Access the device camera and stream to cameraView
+			function cameraStart() {
+    			navigator.mediaDevices
+        		.getUserMedia(constraints)
+        		.then(function(stream) {
+            	track = stream.getTracks()[0];
+            	cameraView.srcObject = stream;
+        	})
+        	.catch(function(error) {
+            	console.error("Oops. Something is broken.", error);
+        	});
+}
+
+
+
+// Take a picture when cameraTrigger is tapped
+cameraTrigger.onclick = function() {
+	for(var i=0;i<radio.length;i++){
+        if(radio[i].checked==true) {
+                 selectvalue=radio[i].value;
+                 break;
+        }
+      }
+    console.log(selectvalue) // selectValue 0 represents normal while 1 represents abnormal
+    if(selectvalue == null){alert("Select the type of dashboard first!")}
+	else{
+    cameraSensor.width = cameraView.videoWidth;
+    cameraSensor.height = cameraView.videoHeight;
+    cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
+    cameraOutput.src = cameraSensor.toDataURL();
+	const base64 = cameraOutput.src;
+	console.log(base64);
+	var arr = base64.split(","),
+    //mime = arr[0].match(/:(.\*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+	while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  	}
+	const file = new Blob([u8arr], {type: 'image/png'});
+
+		
+        const fileReader = new FileReader();
+
+        fileReader.readAsArrayBuffer(file);
+
+        fileReader.onload = async (event) => {
+            const content = event.target.result;
+            const CHUNK_SIZE = 1000;
+            const totalChunks = event.target.result.byteLength / CHUNK_SIZE;
+
+            var fileName = file.name;
+			if(selectvalue == 0){fileName = "Normal__"+ Math.random().toString(36).slice(-6) + ".png";}
+			else{fileName = "Abnormal__"+ Math.random().toString(36).slice(-6) + ".png";}
+			
+			
+            for (let chunk = 0; chunk < totalChunks + 1; chunk++) {
+                let CHUNK = content.slice(chunk * CHUNK_SIZE, (chunk + 1) * CHUNK_SIZE)
+                console.log(fileName)
+                await fetch('/upload?fileName=' + fileName, {
+                    'method' : 'POST',
+                    'headers' : {
+                        'content-type' : "application/octet-stream",
+                        'content-length' : CHUNK.length
+                    },
+                    'body' : CHUNK
+                })
+            }           
+            //fileUploaded += 1;
+        }
+	}    
+    //cameraOutput.src = cameraSensor.toDataURL("image/webp");
+    //cameraOutput.classList.add("taken");
+    // track.stop();
+};
+
+// Start the video stream when the window loads
+window.addEventListener("load", cameraStart, false);
+
+		</script> 
+	</body>
+	<style>
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#camera, #camera--view, #camera--sensor, #camera--output{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#camera--view, #camera--sensor, #camera--output{
+    transform: scaleX(-1);
+    filter: FlipH;
+}
+
+#camera--trigger{
+    width: 200px;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: 30px;
+    left: calc(50% - 100px);
+}
+
+#select1{
+    width: 50px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    background-color: black;
+    color: white;
+    position: fixed;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    bottom: 130px;
+    left: calc(50% - 100px);
+}
+#select2{
+    width: 50px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    background-color: black;
+    color: white;
+    position: fixed;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    bottom: 130px;
+    left: calc(50% + 10px);
+}
+.taken{
+    height: 100px!important;
+    width: 100px!important;
+    transition: all 0.5s ease-in;
+    border: solid 3px white;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+	</style>
+</html>
