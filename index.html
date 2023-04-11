@@ -38,8 +38,8 @@
 
 		<!-- Reference to your JavaScript file -->
 		<script>
-			var constraints = { video: { facingMode: "user" }, audio: false };
-			//var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 4096 }, height: { ideal: 2160 } }, audio: false };
+			//var constraints = { video: { facingMode: "user" }, audio: false };
+			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 4096 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
 			var radio=document.getElementsByName("quality");
 			// Define constants
