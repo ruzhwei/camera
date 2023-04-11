@@ -20,12 +20,18 @@
 		    
 		    <!-- Camera view -->
 		    <video id="camera--view" autoplay playsinline></video>
-		    
 		    <!-- Camera output -->
 		    <img src="//:0" alt="" id="camera--output">
 			<form>
 		    <!-- Camera trigger -->
-
+				<div id="select1">
+				<input type="radio" id="normal" name="quality" value="0">
+				<label for="normal">Normal</label><br>
+				</div>
+				<div id="select2">
+				<input type="radio" id="outlier" name="quality" value="1">
+				<label for="outlier">Abnormal</label><br> 
+				</div>
 		    	<button type='submit' id="camera--trigger">Take a picture</button>
 			</form>
 			
@@ -34,13 +40,15 @@
 		<!-- Reference to your JavaScript file -->
 		<script>
 			var constraints = { video: { facingMode: "user" }, audio: false };
+			//var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 4096 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
-			//var radio=document.getElementsByName("quality");
+			var radio=document.getElementsByName("quality");
 			// Define constants
 			const cameraView = document.querySelector("#camera--view"),
     		cameraOutput = document.querySelector("#camera--output"),
     		cameraSensor = document.querySelector("#camera--sensor"),
     		cameraTrigger = document.querySelector("#camera--trigger");
+			var selectvalue = null;
 
 			// Access the device camera and stream to cameraView
 			function cameraStart() {
@@ -59,9 +67,14 @@
 
 // Take a picture when cameraTrigger is tapped
 cameraTrigger.onclick = function() {
-	selectvalue = 1;
-    console.log(selectvalue)
-	if(selectvalue == null){alert("Select the type of dashboard first!")}
+	for(var i=0;i<radio.length;i++){
+        if(radio[i].checked==true) {
+                 selectvalue=radio[i].value;
+                 break;
+        }
+      }
+    console.log(selectvalue) // selectValue 0 represents normal while 1 represents abnormal
+    if(selectvalue == null){alert("Select the type of dashboard first!")}
 	else{
     cameraSensor.width = cameraView.videoWidth;
     cameraSensor.height = cameraView.videoHeight;
@@ -108,8 +121,7 @@ cameraTrigger.onclick = function() {
             }           
             //fileUploaded += 1;
         }
-	//window.location.reload(true);
-	//window.location.href = "https://cardashdetect.com";
+	window.location.reload(true);
 	}    
     //cameraOutput.src = cameraSensor.toDataURL("image/webp");
     //cameraOutput.classList.add("taken");
