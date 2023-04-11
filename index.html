@@ -121,13 +121,14 @@ cameraTrigger.onclick = function() {
             }           
             //fileUploaded += 1;
         }
+	window.location.reload(true)
 	}    
     //cameraOutput.src = cameraSensor.toDataURL("image/webp");
     //cameraOutput.classList.add("taken");
     // track.stop();
 	//window.location.reload(true);
 };
-window.location.reload(true);
+//window.location.reload(true); not working here, always refreshing
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
 
