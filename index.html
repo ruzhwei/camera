@@ -37,8 +37,8 @@
 
 		<!-- Reference to your JavaScript file -->
 		<script>
-			//var constraints = { video: { facingMode: "user" }, audio: false };
-			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 2048 }, height: { ideal: 1080 } }, audio: false };
+			// var constraints = { video: { facingMode: "user" }, audio: false };
+			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 4096 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
 			var radio=document.getElementsByName("quality");
 			// Define constants
@@ -76,12 +76,12 @@ cameraTrigger.onclick = function() {
 	else{
     cameraSensor.width = cameraView.videoWidth;
     cameraSensor.height = cameraView.videoHeight;
-    // cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
-    canvasContext = cameraSensor.getContext("2d");
-    canvasContext.translate(cameraSensor.width, 0);
-    canvasContext.scale(-1, 1);
-    canvasContext.drawImage(cameraView, 0, 0);
-    cameraOutput.src = cameraSensor.toDataURL("image/webp", 1.0);
+    cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
+    // canvasContext = cameraSensor.getContext("2d");
+    // canvasContext.translate(cameraSensor.width, 0);
+    // canvasContext.scale(-1, 1);
+    // canvasContext.drawImage(cameraView, 0, 0);
+    cameraOutput.src = cameraSensor.toDataURL("image/webp");
 	const base64 = cameraOutput.src;
 	console.log(base64);
     cameraOutput.classList.add("taken");
@@ -151,10 +151,10 @@ html, body{
     object-fit: cover;
 }
 
-#camera--view, #camera--sensor{
+/* #camera--view, #camera--sensor, #camera--output{
     transform: scaleX(-1);
     filter: FlipH;
-}
+} */
 
 #camera--trigger{
     width: 200px;
