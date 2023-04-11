@@ -22,7 +22,6 @@
 		    <video id="camera--view" autoplay playsinline></video>
 		    <!-- Camera output -->
 		    <img src="//:0" alt="" id="camera--output">
-			<form>
 		    <!-- Camera trigger -->
 				<div id="select1">
 				<input type="radio" id="normal" name="quality" value="0">
@@ -32,8 +31,7 @@
 				<input type="radio" id="outlier" name="quality" value="1">
 				<label for="outlier">Abnormal</label><br> 
 				</div>
-		    	<button type='submit' id="camera--trigger">Take a picture</button>
-			</form>
+		    	<button id="camera--trigger">Take a picture</button>
 			
 		</main>
 
@@ -79,9 +77,10 @@ cameraTrigger.onclick = function() {
     cameraSensor.width = cameraView.videoWidth;
     cameraSensor.height = cameraView.videoHeight;
     cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
-    cameraOutput.src = cameraSensor.toDataURL();
+    cameraOutput.src = cameraSensor.toDataURL("image/webp");
 	const base64 = cameraOutput.src;
 	console.log(base64);
+    cameraOutput.classList.add("taken");
 	var arr = base64.split(","),
     //mime = arr[0].match(/:(.\*?);/)[1],
     bstr = atob(arr[1]),
