@@ -37,8 +37,8 @@
 
 		<!-- Reference to your JavaScript file -->
 		<script>
-			var constraints = { video: { facingMode: "user" }, audio: false };
-			//var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 4096 }, height: { ideal: 2160 } }, audio: false };
+			//var constraints = { video: { facingMode: "user" }, audio: false };
+			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 2048 }, height: { ideal: 1080 } }, audio: false };
 			var track = null;
 			var radio=document.getElementsByName("quality");
 			// Define constants
@@ -81,7 +81,7 @@ cameraTrigger.onclick = function() {
     canvasContext.translate(cameraSensor.width, 0);
     canvasContext.scale(-1, 1);
     canvasContext.drawImage(cameraView, 0, 0);
-    cameraOutput.src = cameraSensor.toDataURL("image/webp");
+    cameraOutput.src = cameraSensor.toDataURL("image/webp", 1.0);
 	const base64 = cameraOutput.src;
 	console.log(base64);
     cameraOutput.classList.add("taken");
