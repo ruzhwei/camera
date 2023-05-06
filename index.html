@@ -37,9 +37,7 @@
         <script src="https://cdn.jsdelivr.net/gh/tanaikech/ResumableUploadForGoogleDrive_js/resumableupload_js.min.js"></script>
 
 		<!-- Reference to your JavaScript file -->
-		<script type="module">
-            //const { google } = require('googleapis');
-            //import * as google from 'googleapis';
+		<script>
             fetch('https://www.googleapis.com/oauth2/v4/token', {
     method: 'POST',
     headers: {
@@ -53,16 +51,7 @@
 })
    .then(response => response.json())
    .then(response => {window.accessToken = JSON.stringify(response.access_token)})
-            //const clientId = "58257097304-h22dspd3ii9lvnsf4fnrs41lp1mc1o3f.apps.googleusercontent.com";
-            //const clientSecret = "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";
-            //const redirectUri = "https://developers.google.com/oauthplayground";
-            //const refreshToken = "1//048Q-eLnj3_ieCgYIARAAGAQSNwF-L9Ir5_IydT5g11I6z4vyJqQ5dls1uxE7XlS59BKA4K4e23hLxZE85BbxNYlks1QlspPXNbQ";
-            //const driveClient = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
-            //driveClient.setCredentials({ refresh_token: refreshToken });
-            //const drive = google.drive({
-            //    version: 'v3',
-            //    auth: driveClient,
-            //});
+			
 			//var constraints = { video: { facingMode: "user" }, audio: false };
 			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 3840 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
