@@ -34,10 +34,24 @@
 		    	<button id="camera--trigger">Take a picture</button>
 			
 		</main>
+        <script src="https://cdn.jsdelivr.net/gh/tanaikech/ResumableUploadForGoogleDrive_js/resumableupload_js.min.js"></script>
 
 		<!-- Reference to your JavaScript file -->
-		<script>
-			// var constraints = { video: { facingMode: "user" }, audio: false };
+		<script type="module">
+            //const { google } = require('googleapis');
+            //import * as google from 'googleapis';
+            const accessToken = "ya29.a0AWY7Cklr7uA-SNkl4pFrJ586qip689sntlFvZHX0Jwtl86B7el9xwhuW5HBsZVU3qUb4iyy8RRUFBpxyEYZq7Szes9ffL5z6RvGUbgy_jf9lJpbv8lhiNpmV31Gj12rX6zZ1pun1pnpvr6yVwTQNR98fPFdNaCgYKAc0SAQ8SFQG1tDrpUdUxQG953K4pnO84_OO5qw0163"; // Please set access token here.
+            //const clientId = "58257097304-h22dspd3ii9lvnsf4fnrs41lp1mc1o3f.apps.googleusercontent.com";
+            //const clientSecret = "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";
+            //const redirectUri = "https://developers.google.com/oauthplayground";
+            //const refreshToken = "1//048Q-eLnj3_ieCgYIARAAGAQSNwF-L9Ir5_IydT5g11I6z4vyJqQ5dls1uxE7XlS59BKA4K4e23hLxZE85BbxNYlks1QlspPXNbQ";
+            //const driveClient = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+            //driveClient.setCredentials({ refresh_token: refreshToken });
+            //const drive = google.drive({
+            //    version: 'v3',
+            //    auth: driveClient,
+            //});
+			//var constraints = { video: { facingMode: "user" }, audio: false };
 			var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 3840 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
 			var radio=document.getElementsByName("quality");
@@ -102,6 +116,40 @@ cameraTrigger.onclick = function() {
 
         fileReader.onload = async (event) => {
             const content = event.target.result;
+            var fileName = file.name;
+            var timestamp=new Date().getTime();
+			if(selectvalue == 0){fileName = "Normal__"+ timestamp + ".png";}
+			else{fileName = "Abnormal__"+ timestamp + ".png";}
+    const resource = {
+      fileName: fileName,
+      fileSize: file.size,
+      fileType: 'image/png',
+      fileBuffer: content,
+      accessToken: accessToken,
+      folderId: "1pEs_yK8Em1XS9HhR2woaOJTSDL7u3NOb",
+    };
+    const ru = new ResumableUploadToGoogleDrive();
+    ru.Do(resource, function (res, err) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log(res);
+    });
+            /*
+            const response = drive.files.create({
+                requestBody: {
+                    name: fileName,
+                    mimeType: 'image/png',
+                    //parents: folderId ? [folderId] : [],
+            },
+                media: {
+                    mimeType: 'image/png',
+                    body: content,
+            },
+            });
+            */
+            /*
             const CHUNK_SIZE = 1000;
             const totalChunks = event.target.result.byteLength / CHUNK_SIZE;
 
@@ -121,7 +169,8 @@ cameraTrigger.onclick = function() {
                     },
                     'body' : CHUNK
                 })
-            }           
+            }
+            */           
             //fileUploaded += 1;
         }
 	}    
