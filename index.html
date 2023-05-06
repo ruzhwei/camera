@@ -40,7 +40,19 @@
 		<script type="module">
             //const { google } = require('googleapis');
             //import * as google from 'googleapis';
-            const accessToken = "ya29.a0AWY7Cklr7uA-SNkl4pFrJ586qip689sntlFvZHX0Jwtl86B7el9xwhuW5HBsZVU3qUb4iyy8RRUFBpxyEYZq7Szes9ffL5z6RvGUbgy_jf9lJpbv8lhiNpmV31Gj12rX6zZ1pun1pnpvr6yVwTQNR98fPFdNaCgYKAc0SAQ8SFQG1tDrpUdUxQG953K4pnO84_OO5qw0163"; // Please set access token here.
+            fetch('https://www.googleapis.com/oauth2/v4/token', {
+    method: 'POST',
+    headers: {
+    "Content-type": "application/json; charset=UTF-8"
+    },
+    body: JSON.stringify({         
+        client_id: '1016206409206-j6it83dcea75qa13q7lbkb7oju2bmuj9.apps.googleusercontent.com',
+        client_secret: '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',
+        refresh_token: '1//04zP0lIFr9S-MCgYIARAAGAQSNwF-L9IrqyRhOfUbBKG_73Obs-97UZLU74FNccwEef_jSTXQ7JKyBl4m0DvlQkDD1E90YTqgw8s',
+        grant_type: 'refresh_token', })
+})
+   .then(response => response.json())
+   .then(response => {window.accessToken = JSON.stringify(response.access_token)})
             //const clientId = "58257097304-h22dspd3ii9lvnsf4fnrs41lp1mc1o3f.apps.googleusercontent.com";
             //const clientSecret = "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";
             //const redirectUri = "https://developers.google.com/oauthplayground";
