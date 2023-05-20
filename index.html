@@ -52,7 +52,7 @@
    .then(response => response.json())
    .then(response => {window.accessToken = JSON.stringify(response.access_token)})
 			
-			var constraints = { video: { facingMode: "user", width: { ideal: 3840 }, height: { ideal: 2160 } }, audio: false };
+			var constraints = { video: { facingMode: { exact: "user" }, width: { ideal: 3840 }, height: { ideal: 2160 } }, audio: false };
 			//var constraints = { video: { facingMode: { exact: "environment" }, width: { ideal: 3840 }, height: { ideal: 2160 } }, audio: false };
 			var track = null;
 			var radio=document.getElementsByName("quality");
