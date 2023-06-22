@@ -31,6 +31,45 @@
 				<input type="radio" id="outlier" name="quality" value="1">
 				<label for="outlier">Abnormal</label><br> 
 				</div>
+                <div id="select3">
+                <select id="menu">
+                    <option>BD</option>
+                    <option>SO</option>
+                    <option>DSS</option>
+                    <option>DSO</option>
+                    <option>IR</option>
+                    <option>ID</option>
+                    <option>IG</option>
+                    <option>UCH</option>
+                    <option>UCO</option>
+                    <option>PHI</option>
+                    <option>CR</option>
+                    <option>WD</option>
+                    <option>BR</option>
+                    <option>FM</option>
+                    <option>FLH</option>
+                    <option>FLO</option>
+                    <option>SS</option>
+                    <option>SL</option>
+                    <option>LF</option>
+                    <option>DES</option>
+                    <option>IT</option>
+                    <option>FMB</option>
+                    <option>MP</option>
+                    <option>GL</option>
+                    <option>AM</option>
+                    <option>OTI</option>
+                    <option>HANEQ</option>
+                    <option>BUR</option>
+                    <option>PAN</option>
+                    <option>HSC</option>
+                    <option>SC</option>
+                    <option>SCI</option>
+                    <option>BS</option>
+                    <option>ML</option>
+                    <option>DT</option>
+                </select>
+                </div>
 		    	<button id="camera--trigger">Take a picture</button>
 			
 		</main>
@@ -61,6 +100,8 @@
     		cameraOutput = document.querySelector("#camera--output"),
     		cameraSensor = document.querySelector("#camera--sensor"),
     		cameraTrigger = document.querySelector("#camera--trigger");
+            var myselect = document.getElementById("menu")
+
 			var selectvalue = null;
 
 			// Access the device camera and stream to cameraView
@@ -86,6 +127,8 @@ cameraTrigger.onclick = function() {
                  break;
         }
       }
+    var index=myselect.selectedIndex
+    var cateName = myselect.options[index].text
     console.log(selectvalue) // selectValue 0 represents normal while 1 represents abnormal
     if(selectvalue == null){alert("Select the type of dashboard first!")}
 	else{
@@ -119,8 +162,9 @@ cameraTrigger.onclick = function() {
             const content = event.target.result;
             var fileName = file.name;
             var timestamp=new Date().getTime();
-			if(selectvalue == 0){fileName = "Normal__"+ timestamp + ".png";}
-			else{fileName = "Abnormal__"+ timestamp + ".png";}
+			if(selectvalue == 0){fileName = "Normal__"+ timestamp + "__" + cateName +".png";}
+			else{fileName = "Abnormal__"+ timestamp+ "__" + cateName  + ".png";}
+            console.log(fileName)
     const resource = {
       fileName: fileName,
       fileSize: file.size,
@@ -246,6 +290,19 @@ html, body{
     box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
     bottom: 130px;
     left: calc(50% + 10px);
+}
+#select3{
+    width: 50px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    background-color: black;
+    color: white;
+    position: fixed;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    bottom: 230px;
+    left: calc(50% - 50px);
 }
 .taken{
     height: 100px!important;
