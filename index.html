@@ -162,7 +162,7 @@ cameraTrigger.onclick = function() {
             const content = event.target.result;
             var fileName = file.name;
             var timestamp=new Date().getTime();
-			if(selectvalue == 0){fileName = "Normal__"+ timestamp + "__" + cateName +".png";}
+			if(selectvalue == 0){fileName = "Normal__"+ timestamp +".png";}
 			else{fileName = "Abnormal__"+ timestamp+ "__" + cateName  + ".png";}
             console.log(fileName)
     const resource = {
