@@ -85,7 +85,7 @@
     body: JSON.stringify({         
         client_id: '1016206409206-j6it83dcea75qa13q7lbkb7oju2bmuj9.apps.googleusercontent.com',
         client_secret: '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',
-        refresh_token: '1//046pZRcR2-rvUCgYIARAAGAQSNwF-L9Ir3dZt_B843Yt9z6ZWLrr2-4Du6zh1EQ3TljWghTQSe9BZzGGR7WCzH0_W1AQ4ONJrjCE',
+        refresh_token: '1//048xyyHmOvumsCgYIARAAGAQSNwF-L9IrUFAnA_aA11gTS5BB1r3g3PtnFilwwyVNjKeyEwkvU6RcadKsLaXV1Gl64rcGhPrjIBQ',
         grant_type: 'refresh_token', })
 })
    .then(response => response.json())
@@ -162,7 +162,7 @@ cameraTrigger.onclick = function() {
             const content = event.target.result;
             var fileName = file.name;
             var timestamp=new Date().getTime();
-			if(selectvalue == 0){fileName = "Normal__"+ timestamp +".png";}
+			if(selectvalue == 0){fileName = "Normal__"+ timestamp + "__" + cateName +".png";}
 			else{fileName = "Abnormal__"+ timestamp+ "__" + cateName  + ".png";}
             console.log(fileName)
     const resource = {
@@ -292,7 +292,7 @@ html, body{
     left: calc(50% + 10px);
 }
 #select3{
-    width: 50px;
+    width: 100px;
     border-radius: 30px;
     border: none;
     padding: 15px 20px;
