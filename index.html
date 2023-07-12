@@ -47,7 +47,7 @@
 
                 </select>
                 </div>
-		    	<button id="camera--trigger">Take a picture</button>
+		    	<button id="camera--trigger" onclick="debouncedTakeImage()">Take a picture</button>
 			
 		</main>
         <script src="https://cdn.jsdelivr.net/gh/tanaikech/ResumableUploadForGoogleDrive_js/resumableupload_js.min.js"></script>
@@ -94,10 +94,48 @@
         	});
 }
 
+//simple alert component; type:success, error, info; time:ms
+function displayAlert(type, data, time){
 
+var lunbo=document.createElement("div");
+
+if(type == "success") {
+   lunbo.style.backgroundColor = "#009900";
+} else if(type == "error") {
+   lunbo.style.backgroundColor = "#990000";
+} else if(type == "info") {
+   lunbo.style.backgroundColor = "#e6b800";
+} else {
+   console.log("argument TYPE wrong");
+   return;
+}
+
+lunbo.id="lunbo";
+lunbo.style.position = "absolute";
+lunbo.style.width = "400px";
+lunbo.style.height = "60px";
+lunbo.style.marginLeft = "-100px";
+lunbo.style.marginTop = "-30px";
+lunbo.style.left = "45%";
+lunbo.style.top = "15%";
+lunbo.style.color = "white";
+lunbo.style.fontSize = "20px";
+lunbo.style.borderRadius = "20px";
+lunbo.style.textAlign="center";
+lunbo.style.lineHeight="60px";
+
+if(document.getElementById("lunbo")==null){
+   document.body.appendChild(lunbo);
+   lunbo.innerHTML=data;
+   setTimeout(function(){
+       document.body.removeChild(lunbo);
+   } ,time);
+}
+}
 
 // Take a picture when cameraTrigger is tapped
-cameraTrigger.onclick = function() {
+// cameraTrigger.onclick = 
+function takeImage(){
 	for(var i=0;i<radio.length;i++){
         if(radio[i].checked==true) {
                  selectvalue=radio[i].value;
@@ -117,6 +155,11 @@ cameraTrigger.onclick = function() {
     // canvasContext.scale(-1, 1);
     // canvasContext.drawImage(cameraView, 0, 0);
     cameraOutput.src = cameraSensor.toDataURL("image/webp", 1.0);
+    var timeHour=new Date().getHours();
+    var timeMinute=new Date().getMinutes();
+    var timeSec=new Date().getSeconds();
+    var currentTime = timeHour + ":" + timeMinute + ":" + timeSec
+    displayAlert("success", "Taken successfully on " + currentTime, 1000)
 	const base64 = cameraOutput.src;
 	console.log(base64);
     cameraOutput.classList.add("taken");
@@ -136,9 +179,9 @@ cameraTrigger.onclick = function() {
         fileReader.readAsArrayBuffer(file);
 
         fileReader.onload = async (event) => {
+            var timestamp=new Date().getTime();
             const content = event.target.result;
             var fileName = file.name;
-            var timestamp=new Date().getTime();
 			if(selectvalue == 0){fileName = "Normal__"+ timestamp +".png";}
 			else{fileName = "Abnormal__"+ timestamp+ "__" + cateName  + ".png";}
             console.log(fileName)
@@ -201,6 +244,20 @@ cameraTrigger.onclick = function() {
     // track.stop();
 	//window.location.reload(true);
 };
+function debounce(func, timeout = 2000){
+    let timer;
+  return (...args) => {
+    if (!timer) {
+      func.apply(this, args);
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = undefined;
+    }, timeout);
+  };
+}
+
+const debouncedTakeImage = debounce(() => takeImage());
 //window.location.reload(true); not working here, always refreshing
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
